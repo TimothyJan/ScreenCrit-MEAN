@@ -1,0 +1,149 @@
+
+<div *ngIf="!loadingData; else loadingBlock">
+  <div class="dialog-container">
+
+    <!-- Poster -->
+    <div class="poster-wrapper">
+      <div [ngSwitch]="this.data.movieOrTvSeries">
+        <div *ngSwitchCase="'MOVIES'">
+          <img [src]="movieDetails.poster_path" alt="{{ movieDetails.title }}" class="poster-image">
+        </div>
+        <div *ngSwitchCase="'TVSERIES'">
+          <img [src]="tvSeriesDetails.poster_path" alt="{{ tvSeriesDetails.name }}" class="poster-image">
+        </div>
+      </div>
+    </div>
+
+    <!-- Close Button -->
+    <button mat-icon-button (click)="onCloseDialog()" class="close-dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <!-- Dialog Content -->
+    <div class="header-poster-wrapper">
+      <div [ngSwitch]="this.data.movieOrTvSeries">
+        <!-- MOVIES -->
+        <div *ngSwitchCase="'MOVIES'">
+          <div class="title-container">
+            <h1>
+              {{ movieDetails.title }}
+              <span class="title-release-date">{{ movieDetails.release_date | date: 'yyyy' }}</span>
+            </h1>
+            <p>{{ genreList }}</p>
+          </div>
+          <div class="info-container">
+            <h3>Overview: </h3>
+            <p>{{ movieDetails.overview }}</p>
+          </div>
+
+          <form [formGroup]="reviewForm" (ngSubmit)="onEditReview()">
+            <div class="review-container">
+              <!-- Rating -->
+              <div class="review-item">
+                <mat-label>Rating (out of 5):</mat-label>
+                <br>
+                <!-- <app-star-rating [(rating)]="rating"></app-star-rating> -->
+                <app-star-rating [rating]="reviewRating" [canEditRating]="true" (ratingChange)="setRating($event)"></app-star-rating>
+                <!-- <input matInput type="number" min="0" max="5" formControlName="rating"> -->
+              </div>
+              <!-- Rating Error -->
+              <div class="rating-error">
+                <div *ngIf="(reviewForm.controls['rating'].dirty || reviewForm.controls['rating'].touched)">
+                  <div *ngIf="reviewForm.controls['rating'].errors?.['required']">
+                    <mat-error>
+                      Rating is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+              <!-- Review -->
+              <div class="review-item">
+                <mat-label>Review: </mat-label>
+                <br>
+                <mat-form-field>
+                  <textarea matInput placeholder="This movie made me feel..." rows="3" formControlName="review"></textarea>
+                </mat-form-field>
+              </div>
+              <!-- Review Error -->
+              <div class="review-error">
+                <div *ngIf="(reviewForm.controls['review'].dirty || reviewForm.controls['review'].touched)">
+                  <div *ngIf="reviewForm.controls['review'].errors?.['required']">
+                    <mat-error>
+                      Review is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- TVSERIES -->
+        <div *ngSwitchCase="'TVSERIES'">
+          <div class="title-container">
+            <h1>
+              {{ tvSeriesDetails.name }}
+              <span class="title-release-date">{{ tvSeriesDetails.first_air_date | date: 'yyyy' }}</span>
+            </h1>
+            <p>{{ genreList }}</p>
+          </div>
+          <div class="info-container">
+            <h3>Overview: </h3>
+            <p>{{ tvSeriesDetails.overview }}</p>
+          </div>
+
+          <form [formGroup]="reviewForm" (ngSubmit)="onEditReview()">
+            <div class="review-container">
+              <!-- Rating -->
+              <div class="review-item">
+                <mat-label>Rating (out of 5):</mat-label>
+                <br>
+                <app-star-rating [rating]="reviewRating" [canEditRating]="true" (ratingChange)="setRating($event)"></app-star-rating>
+                <!-- <app-star-rating [rating]=0 (ratingChange)="setRating($event)"></app-star-rating> -->
+                <!-- <input matInput type="number" min="0" max="5" formControlName="rating"> -->
+              </div>
+            <div class="rating-error">
+              <div *ngIf="(reviewForm.controls['rating'].dirty || reviewForm.controls['rating'].touched)">
+                <div *ngIf="reviewForm.controls['rating'].errors?.['required']">
+                  <mat-error>
+                    Rating is required.
+                  </mat-error>
+                </div>
+              </div>
+            </div>
+              <!-- Review -->
+              <div class="review-item">
+                <mat-label>Review: </mat-label>
+                <br>
+                <mat-form-field>
+                  <textarea matInput placeholder="This movie made me feel..." rows="3" formControlName="review"></textarea>
+                </mat-form-field>
+              </div>
+              <div class="review-error">
+                <div *ngIf="(reviewForm.controls['review'].dirty || reviewForm.controls['review'].touched)">
+                  <div *ngIf="reviewForm.controls['review'].errors?.['required']">
+                    <mat-error>
+                      Review is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Buttons -->
+        <div class="dialog-buttons">
+          <button mat-raised-button (click)="onDeleteReview()">Delete Review</button>
+          <button mat-raised-button (click)="onEditReview()">Edit Review</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #loadingBlock>
+  <app-loading-spinner [isLoading]="loadingData"></app-loading-spinner>
+</ng-template>

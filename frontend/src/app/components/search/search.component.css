@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  justify-content: center;
+  background-color: #01b4e4;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 6rem 2rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.search-bar{
+  width: 100%;
+  height: 46px;
+  line-height: 46px;
+  font-size: 1.1em;
+  color: rgba(0, 0, 0, .5);
+  border: 0;
+  border-radius: 30px;
+  padding: 10px 20px;
+}
+
+.submit-button{
+  height: 46px;
+  padding: 10px 26px;
+  border: 0;
+  border-radius: 30px;
+  top:15%;
+}
+
+

@@ -1,0 +1,14 @@
+<footer class="footer" id="footer">
+  <div class="footer_copyright">
+    <p>Copyright © 2024 MEANReviews</p>
+  </div>
+  <div
+    class="footer_links"
+    *ngFor="let link of links">
+    <a href="{{link.url}}" target="_blank" title="{{link.title}}">
+      <img src="assets/images/social/{{link.title}}.svg" alt="{{link.title}}">
+    </a>
+  </div>
+
+</footer>
+

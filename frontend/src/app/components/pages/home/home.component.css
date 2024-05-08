@@ -1,0 +1,17 @@
+.flex-container {
+  /* flex-flow: center; */
+  /* justify-content: space-around; */
+  text-align: center;
+  justify-content: center;
+  column-gap: 5%;
+}
+
+.title {
+  padding: 6px;
+  background-color: #01b4e4;
+}
+
+.description {
+  padding: 6px;
+  background-color: #D3D3D3;
+}

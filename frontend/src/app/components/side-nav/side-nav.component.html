@@ -1,0 +1,73 @@
+
+<div *ngIf="isLargeScreen; else sidenavBlock">
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidenav Content -->
+    <mat-sidenav-content>
+      <div class="header">
+
+        <div class="nav-bar-title">
+          <app-title></app-title>
+        </div>
+        <div class="nav-bar-menu">
+          <ul class="nav-bar-list">
+            <li
+              class="nav-bar-list-items"
+              *ngFor="let link of navLinks"
+              routerLinkActive="active"
+              [routerLink]="link.path">
+              <a class="nav-bar-list-items-anchor">
+                {{ link.label }}
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</div>
+
+<ng-template #sidenavBlock>
+  <!-- Menu Icon -->
+  <button *ngIf="!sidenav.opened" mat-icon-button (click)="sidenav.toggle()" class="burger-menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- SideNav -->
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="over" position="start" >
+      <!-- Title -->
+      <app-title></app-title>
+      <!-- Close Button -->
+      <button mat-icon-button (click)="sidenav.toggle()" class="exit-sidenav">
+        <mat-icon>close</mat-icon>
+      </button>
+      <!-- Router List -->
+      <mat-nav-list>
+        <ul>
+          <li
+            *ngFor="let link of navLinks"
+            routerLinkActive="active"
+            [routerLink]="link.path">
+            <a class="side-nav-list-items-anchor">
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!-- Sidenav Content -->
+    <mat-sidenav-content>
+      <div class="header">
+        <app-title></app-title>
+      </div>
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</ng-template>
