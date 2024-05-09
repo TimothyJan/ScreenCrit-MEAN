@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MEANReviews": {
+    "ScreenCrit": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/meanreviews",
+            "outputPath": "dist/screencrit",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -73,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "MEANReviews:build:production"
+              "buildTarget": "ScreenCrit:build:production"
             },
             "development": {
-              "buildTarget": "MEANReviews:build:development"
+              "buildTarget": "ScreenCrit:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "MEANReviews:build"
+            "buildTarget": "ScreenCrit:build"
           }
         },
         "test": {
