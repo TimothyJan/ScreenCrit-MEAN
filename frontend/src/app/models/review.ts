@@ -2,17 +2,13 @@ export class Review {
   rating: number;
   review: string;
   _id?: number;
-  constructor(rating:number, review: string, _id?: number) {
+  movieId?: number;
+  tvSeriesId?: number;
+  constructor(rating:number, review: string, _id?: number, movieId?: number, tvSeriesId?: number) {
     this.rating = rating;
     this.review = review;
     this._id = _id;
+    this.movieId = movieId;
+    this.tvSeriesId = tvSeriesId;
   }
-}
-
-export class MovieReview extends Review {
-  movieId: number;
-}
-
-export class TVSeriesReview extends Review {
-  tvSeriesId: number;
 }
