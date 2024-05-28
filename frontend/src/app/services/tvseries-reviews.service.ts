@@ -33,7 +33,7 @@ export class TVseriesReviewsService {
         return this.allTVSeriesReviews[i];
       }
     }
-    return new TVSeriesReview(0,0,"");
+    return new TVSeriesReview(0,"",0);
   }
 
   /** Update Review */

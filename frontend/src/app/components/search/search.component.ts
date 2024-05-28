@@ -1,8 +1,19 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TmdbService } from '../../services/tmdb.service';
+import { CommonModule } from '@angular/common';
+import { CarouselComponent } from '../carousel/carousel.component';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-search',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    CarouselComponent,
+    MatIconModule
+  ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })

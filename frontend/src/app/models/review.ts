@@ -1,11 +1,11 @@
 export class Review {
-  reviewId: number;
   rating: number;
   review: string;
-  constructor(reviewId:number, rating:number, review: string) {
-    this.reviewId = reviewId;
+  _id?: number;
+  constructor(rating:number, review: string, _id?: number) {
     this.rating = rating;
     this.review = review;
+    this._id = _id;
   }
 }
 

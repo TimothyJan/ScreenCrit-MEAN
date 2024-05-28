@@ -1,17 +1,27 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { TmdbService } from '../../services/tmdb.service';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MovieReviewsService } from '../../services/movie-reviews.service';
+import { TmdbService } from '../../services/tmdb.service';
 import { TVseriesReviewsService } from '../../services/tvseries-reviews.service';
+import { CommonModule } from '@angular/common';
+import { CarouselItemComponent } from './carousel-item/carousel-item.component';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { CarouselReviewItemComponent } from './carousel-review-item/carousel-review-item.component';
 
 @Component({
   selector: 'app-carousel',
+  standalone: true,
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    CarouselItemComponent,
+    CarouselReviewItemComponent
+  ],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css'
 })
 export class CarouselComponent implements OnInit {
   // TMDB preset lists or search function
   @Input() dataListType:string = "";
-
   @Input() movieOrTvSeries: string = "";
   @Input() query: string = "";
   @Input() reviewCarousel: boolean = false;

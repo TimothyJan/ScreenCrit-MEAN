@@ -7,11 +7,15 @@
 }
 
 mat-sidenav {
-  /* width: 150px; */
-  width: 200px;
+  width: 250px;
   height: 100%;
   padding: 32px;
   background-color: #0d253f;
+}
+
+mat-icon {
+  background-color: #0d253f;
+  color: white;
 }
 
 .burger-menu {
@@ -24,7 +28,7 @@ mat-sidenav {
 .exit-sidenav {
   position: absolute;
   top: 1.5rem;
-  left: 9rem;
+  left: 12rem;
   z-index: 100;
 }
 

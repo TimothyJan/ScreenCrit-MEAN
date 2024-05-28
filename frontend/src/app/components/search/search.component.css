@@ -24,6 +24,7 @@
 }
 
 .submit-button{
+  position: relative;
   height: 46px;
   padding: 10px 26px;
   border: 0;
@@ -31,4 +32,11 @@
   top:15%;
 }
 
+button {
+  background-color: #01b4e4;
+}
 
+mat-icon {
+  background-color: #01b4e4;
+  color: white;
+}

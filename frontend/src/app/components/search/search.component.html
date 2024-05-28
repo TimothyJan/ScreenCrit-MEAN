@@ -7,7 +7,9 @@
       matSuffix
       aria-label="Search"
       (click)="onSearch(query)">
-      <mat-icon>search</mat-icon>
+      <a href="">
+        <mat-icon>search</mat-icon>
+      </a>
     </button>
   </div>
 </div>
@@ -15,9 +17,3 @@
 <div *ngIf="searchCarousel">
   <app-carousel [movieOrTvSeries]="movieOrTvSeries" [query]="query"></app-carousel>
 </div>
-
-
-
-
-
-

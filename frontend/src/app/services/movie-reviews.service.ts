@@ -33,7 +33,7 @@ export class MovieReviewsService {
         return this.allMovieReviews[i];
       }
     }
-    return new MovieReview(0,0,"");
+    return new MovieReview(0,"",0);
   }
 
   /** Update Review */

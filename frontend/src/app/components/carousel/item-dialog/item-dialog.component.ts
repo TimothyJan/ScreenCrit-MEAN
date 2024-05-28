@@ -1,19 +1,38 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ItemIdType } from '../../../models/item-id-type';
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
-import { TmdbService } from '../../../services/tmdb.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MovieReviewsService } from '../../../services/movie-reviews.service';
+import { TmdbService } from '../../../services/tmdb.service';
 import { TVseriesReviewsService } from '../../../services/tvseries-reviews.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { StarRatingComponent } from '../../star-rating/star-rating.component';
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-item-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    StarRatingComponent,
+  ],
   templateUrl: './item-dialog.component.html',
   styleUrl: './item-dialog.component.css'
 })
-export class ItemDialogComponent {
+export class ItemDialogComponent implements OnInit{
 
   // Checks if data is loaded, if not displays loading spinner component
   loadingData: boolean = true;
@@ -178,3 +197,4 @@ export class ItemDialogComponent {
     this._dialogRef.close();
   }
 }
+

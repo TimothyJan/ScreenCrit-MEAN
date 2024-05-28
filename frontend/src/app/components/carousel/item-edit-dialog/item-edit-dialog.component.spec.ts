@@ -8,7 +8,7 @@ describe('ItemEditDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ItemEditDialogComponent]
+      imports: [ItemEditDialogComponent]
     })
     .compileComponents();
     

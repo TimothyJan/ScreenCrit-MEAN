@@ -1,12 +1,29 @@
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
+
 import { TmdbService } from '../../../services/tmdb.service';
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
-import { MatDialog } from '@angular/material/dialog';
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { TitlePipe } from '../../../pipes/title.pipe';
+import { NgOptimizedImage } from '@angular/common';
+
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ItemDialogComponent } from '../item-dialog/item-dialog.component';
 
 @Component({
   selector: 'app-carousel-item',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    LoadingSpinnerComponent,
+    TitlePipe,
+    NgOptimizedImage,
+    ItemDialogComponent,
+    MatDialogModule
+  ],
   templateUrl: './carousel-item.component.html',
   styleUrl: './carousel-item.component.css'
 })
@@ -41,7 +58,6 @@ export class CarouselItemComponent implements OnInit {
     this._tmdbService.getMovieDetails(this.id)
     .subscribe(
       data => {
-        // console.log(data);
         this.movieDetails = {...data};
         this.setMovieCardDetails();
         this.loadingData = false;
@@ -54,7 +70,8 @@ export class CarouselItemComponent implements OnInit {
 
   /** Set Movie details */
   setMovieCardDetails(): void {
-    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.movieDetails.poster_path;
+    // this.movieDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.movieDetails.poster_path;
+    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/w500/` + this.movieDetails.poster_path;
   }
 
   /** Get TV Series Details */
@@ -75,7 +92,8 @@ export class CarouselItemComponent implements OnInit {
 
   /** Set TV Series Details */
   setTvSeriesCardDetails(): void {
-    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.tvSeriesDetails.poster_path;
+    // this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.tvSeriesDetails.poster_path;
+    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/w500/` + this.tvSeriesDetails.poster_path;
   }
 
   /** Open Dialog */
@@ -88,7 +106,6 @@ export class CarouselItemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
     });
   }
 }

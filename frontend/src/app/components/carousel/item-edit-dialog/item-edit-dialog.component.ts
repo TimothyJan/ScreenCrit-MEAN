@@ -1,5 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { ItemIdType } from '../../../models/item-id-type';
 import { MovieDetails } from '../../../models/movie-details';
@@ -8,13 +9,31 @@ import { MovieReviewsService } from '../../../services/movie-reviews.service';
 import { TmdbService } from '../../../services/tmdb.service';
 import { TVseriesReviewsService } from '../../../services/tvseries-reviews.service';
 import { ItemDialogComponent } from '../item-dialog/item-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { StarRatingComponent } from '../../star-rating/star-rating.component';
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-item-edit-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    StarRatingComponent,
+  ],
   templateUrl: './item-edit-dialog.component.html',
   styleUrl: './item-edit-dialog.component.css'
 })
-export class ItemEditDialogComponent {
+export class ItemEditDialogComponent implements OnInit {
 
   // Checks if data is loaded, if not displays loading spinner component
   loadingData: boolean = true;
@@ -200,3 +219,4 @@ export class ItemEditDialogComponent {
     this._dialogRef.close();
   }
 }
+

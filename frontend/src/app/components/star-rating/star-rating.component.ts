@@ -1,7 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-star-rating',
+  standalone: true,
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './star-rating.component.html',
   styleUrl: './star-rating.component.css'
 })

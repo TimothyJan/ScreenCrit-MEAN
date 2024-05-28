@@ -1,14 +1,30 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { TmdbService } from '../../../services/tmdb.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
-import { MatDialog } from '@angular/material/dialog';
 import { MovieReviewsService } from '../../../services/movie-reviews.service';
+import { TmdbService } from '../../../services/tmdb.service';
 import { TVseriesReviewsService } from '../../../services/tvseries-reviews.service';
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { StarRatingComponent } from '../../star-rating/star-rating.component';
+import { TitlePipe } from '../../../pipes/title.pipe';
+
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ItemEditDialogComponent } from '../item-edit-dialog/item-edit-dialog.component';
 
 @Component({
   selector: 'app-carousel-review-item',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    LoadingSpinnerComponent,
+    TitlePipe,
+    StarRatingComponent,
+    MatDialogModule
+  ],
   templateUrl: './carousel-review-item.component.html',
   styleUrl: './carousel-review-item.component.css'
 })
@@ -126,7 +142,6 @@ export class CarouselReviewItemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
     });
   }
 }

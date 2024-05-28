@@ -1,41 +1,27 @@
-# ScreenCrit-Frontend
-Frontend for ScreenCrit (Movie/TVShow reviews management system) using Node, Angular, Angular Material, and TMDB(The Movie DB) API.
+# ScreenCrit
 
-Home<br>
-<img src="screenshots/1-desktop-home.png" alt="desktop-home">
-<img src="screenshots/1-mobile-home.png" alt="mobile-home">
-<br>
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
 
-Movies<br>
-<img src="screenshots/2-desktop-movies.png" alt="desktop-movies">
-<img src="screenshots/2-mobile-movies.png" alt="mobile-movies">
-<br>
+## Development server
 
-Movies Search<br>
-<img src="screenshots/3-desktop-moviesSearch.png" alt="desktop-movie-search">
-<img src="screenshots/3-mobile-moviesSearch.png" alt="mobile-movie-search">
-<br>
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-TVSeries<br>
-<img src="screenshots/4-desktop-tvseries.png" alt="desktop-tvseries">
-<img src="screenshots/4-mobile-tvseries.png" alt="mobile-tcseries">
-<br>
+## Code scaffolding
 
-TVSeries Search<br>
-<img src="screenshots/5-desktop-tvseriesSearch.png" alt="desktop-tvseries-search">
-<img src="screenshots/5-mobile-tvseriesSearch.png" alt="mobile-tvseries-search">
-<br>
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Create Reviews<br>
-<img src="screenshots/6-desktop-createReview.png" alt="desktop-createReview">
-<img src="screenshots/6-mobile-createReview.png" alt="mobile-createReview">
-<br>
+## Build
 
-Reviews<br>
-<img src="screenshots/7-desktop-reviews.png" alt="desktop-reviews">
-<img src="screenshots/7-mobile-reviews.png" alt="mobile-reviews">
-<br>
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-Edit/Delete Reviews<br>
-<img src="screenshots/8-desktop-reviews-edit.png" alt="desktop-review-edit">
-<img src="screenshots/8-mobile-reviews-edit.png" alt="mobile-review-edit">
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

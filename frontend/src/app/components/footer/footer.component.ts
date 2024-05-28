@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialLink } from '../../models/social-link';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
+  standalone: true,
+  imports: [
+    CommonModule
+  ],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
 })
