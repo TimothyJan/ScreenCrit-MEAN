@@ -4,7 +4,7 @@
       <div class="card">
         <div class="image">
           <a [routerLink]="" (click)="openDialog()">
-            <img [src]="movieDetails.poster_path" width="210" height="350" alt="{{ movieDetails.title }}" priority>
+            <img [src]="movieDetails.poster_path" [width]="imgWidth" [height]="imgHeight" alt="{{ movieDetails.title }}" priority>
           </a>
         </div>
         <div class="content">
@@ -27,7 +27,7 @@
       <div class="card">
         <div class="image">
           <a [routerLink]="" (click)="openDialog()">
-            <img [src]="tvSeriesDetails.poster_path" width="210" height="395" alt="{{ tvSeriesDetails.name }}" priority>
+            <img [src]="tvSeriesDetails.poster_path" [width]="imgWidth" [height]="imgHeight" alt="{{ tvSeriesDetails.name }}" priority>
           </a>
         </div>
         <div class="content">

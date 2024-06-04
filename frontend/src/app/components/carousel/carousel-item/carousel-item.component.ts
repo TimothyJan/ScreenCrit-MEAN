@@ -27,12 +27,17 @@ import { ItemDialogComponent } from '../item-dialog/item-dialog.component';
   templateUrl: './carousel-item.component.html',
   styleUrl: './carousel-item.component.css'
 })
+
 export class CarouselItemComponent implements OnInit {
   @Input() id: number = 0;
   @Input() movieOrTvSeries: string = ""; // MOVIES or TVSERIES****
+
   movieDetails: MovieDetails;
   tvSeriesDetails: TVSeriesDetails;
   loadingData: boolean = true;
+
+  imgWidth:number = 210;
+  imgHeight:number = 350;
 
   constructor(
     private _tmdbService: TmdbService,
@@ -71,7 +76,7 @@ export class CarouselItemComponent implements OnInit {
   /** Set Movie details */
   setMovieCardDetails(): void {
     // this.movieDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.movieDetails.poster_path;
-    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/w500/` + this.movieDetails.poster_path;
+    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/w342/` + this.movieDetails.poster_path;
   }
 
   /** Get TV Series Details */
@@ -93,7 +98,7 @@ export class CarouselItemComponent implements OnInit {
   /** Set TV Series Details */
   setTvSeriesCardDetails(): void {
     // this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.tvSeriesDetails.poster_path;
-    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/w500/` + this.tvSeriesDetails.poster_path;
+    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/w342/` + this.tvSeriesDetails.poster_path;
   }
 
   /** Open Dialog */
