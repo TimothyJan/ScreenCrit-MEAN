@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { MovieReviewsService } from '../../services/movie-reviews.service';
 import { TmdbService } from '../../services/tmdb.service';
-import { TVseriesReviewsService } from '../../services/tvseries-reviews.service';
+import { ReviewService } from '../../services/review.service';
 import { CommonModule } from '@angular/common';
 import { CarouselItemComponent } from './carousel-item/carousel-item.component';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
@@ -36,21 +35,21 @@ export class CarouselComponent implements OnInit {
 
   constructor(
     private _tmdbService: TmdbService,
-    private _movieReviewsService: MovieReviewsService,
-    private _tvSeriesReviewsService: TVseriesReviewsService
+    private _reviewService: ReviewService
   ) {}
 
   ngOnInit(): void {
     this.setTitle();
     this.setItems();
+    /*
     switch(this.movieOrTvSeries) {
       case "MOVIES":
-        this._movieReviewsService.movieReviewsChanged.subscribe(value => {
+        this._reviewService.movieReviewsChanged.subscribe(value => {
           this.setItems();
         });
         break;
       case "TVSERIES":
-        this._tvSeriesReviewsService.tvSeriesReviewsChanged.subscribe(value => {
+        this._reviewService.tvSeriesReviewsChanged.subscribe(value => {
           this.setItems();
         });
         break;
@@ -58,6 +57,7 @@ export class CarouselComponent implements OnInit {
         console.log("Movie or Tvseries Error");
         break;
     }
+    */
   }
 
   /** When query search is changed, carousel item list is reset */
@@ -178,10 +178,14 @@ export class CarouselComponent implements OnInit {
         break;
       }
       case "MoviesList_Reviews": {
-        let reviews = this._movieReviewsService.getReviews();
+        let reviews = this._reviewService.getReviews();
+        console.log(reviews);
+        /*
+        INCOMPLETE
         for(let index=0; index<reviews.length; index++) {
           this.items.push(reviews[index].movieId);
         }
+        */
         this.loadingData = false;
         break;
       }
@@ -222,10 +226,14 @@ export class CarouselComponent implements OnInit {
         break;
       }
       case "TVSeriesList_Reviews": {
-        let reviews = this._tvSeriesReviewsService.getReviews();
+        let reviews = this._reviewService.getReviews();
+        console.log(reviews);
+        /*
+        INCOMPLETE
         for(let index=0; index<reviews.length; index++) {
           this.items.push(reviews[index].tvSeriesId);
         }
+        */
         this.loadingData = false;
         break;
       }
