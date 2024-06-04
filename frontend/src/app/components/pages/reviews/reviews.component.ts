@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { CarouselComponent } from '../../carousel/carousel.component';
+import { CarouselReviewComponent } from '../../carousel-review/carousel-review.component';
 
 @Component({
   selector: 'app-reviews',
   standalone: true,
   imports: [
-    CarouselComponent
+    CarouselReviewComponent
   ],
   templateUrl: './reviews.component.html',
   styleUrl: './reviews.component.css'

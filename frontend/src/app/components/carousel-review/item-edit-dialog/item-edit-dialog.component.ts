@@ -5,10 +5,8 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { ItemIdType } from '../../../models/item-id-type';
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
-import { MovieReviewsService } from '../../../services/movie-reviews.service';
 import { TmdbService } from '../../../services/tmdb.service';
-import { TVseriesReviewsService } from '../../../services/tvseries-reviews.service';
-import { ItemDialogComponent } from '../item-dialog/item-dialog.component';
+import { ReviewService } from '../../../services/review.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -54,12 +52,11 @@ export class ItemEditDialogComponent implements OnInit {
   });
 
   constructor(
-    private _dialogRef: MatDialogRef<ItemDialogComponent>,
+    private _dialogRef: MatDialogRef<ItemEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ItemIdType,
     public dialog: MatDialog,
     private _tmdbService: TmdbService,
-    private _movieReviewsService: MovieReviewsService,
-    private _tvReviewsService: TVseriesReviewsService
+    private _reviewService: ReviewService
   ) {}
 
   /** Get movie/tvseries details and review details to populate component */
@@ -68,18 +65,22 @@ export class ItemEditDialogComponent implements OnInit {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
         this.getMovieDetails();
-        if(this._movieReviewsService.getReview(this.data.id)) {
+        /*
+        if(this._reviewService.getReview(this.data.id)) {
           this.setReviewDetails(this.data.id);
         }
-        //disable id based on movieOrTvSeries
+        */
+        // disable id based on movieOrTvSeries
         this.reviewForm.controls['tvSeriesId'].disable();
         this.reviewForm.controls['movieId'].setValue(this.data.id);
         break;
       case "TVSERIES":
         this.getTvSeriesDetails();
-        if(this._tvReviewsService.getReview(this.data.id)) {
+        /*
+        if(this._reviewsService.getReview(this.data.id)) {
           this.setReviewDetails(this.data.id);
         }
+        */
         // disable id based on movieOrTvSeries
         this.reviewForm.controls['movieId'].disable();
         this.reviewForm.controls['tvSeriesId'].setValue(this.data.id);
@@ -153,20 +154,24 @@ export class ItemEditDialogComponent implements OnInit {
   setReviewDetails(id:number): void {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
-        let currentMovieReview = this._movieReviewsService.getReview(id);
-        // console.log(currentMovieReview);
+        /*
+        let currentMovieReview = this._reviewsService.getReview(id);
+        console.log(currentMovieReview);
         if (currentMovieReview != undefined) {
           this.setRating(currentMovieReview.rating);
           this.reviewForm.controls['review'].setValue(currentMovieReview.review);
         }
+        */
         break;
       case "TVSERIES":
-        let currentTVSeriesReview = this._tvReviewsService.getReview(id);
-        // console.log(currentTVSeriesReview);
+        /*
+        let currentTVSeriesReview = this._reviewsService.getReview(id);
+        console.log(currentTVSeriesReview);
         if(currentTVSeriesReview != undefined) {
           this.setRating(currentTVSeriesReview.rating);
           this.reviewForm.controls['review'].setValue(currentTVSeriesReview.review);
         }
+        */
         break;
       default:
         console.log("Movie or Tvseries Error");
@@ -181,13 +186,13 @@ export class ItemEditDialogComponent implements OnInit {
         case "MOVIES":
           let newMovieRating = this.reviewForm.value.rating || 0;
           let newMovieReview = this.reviewForm.value.review || "";
-          this._movieReviewsService.editReview(this.data.id, newMovieRating, newMovieReview);
+          // this._reviewsService.editReview(this.data.id, newMovieRating, newMovieReview);
           this._dialogRef.close();
           break;
         case "TVSERIES":
           let newTVSeriesRating = this.reviewForm.value.rating || 0;
           let newTVSeriesReview = this.reviewForm.value.review || "";
-          this._tvReviewsService.editReview(this.data.id, newTVSeriesRating, newTVSeriesReview);
+          // this._reviewsService.editReview(this.data.id, newTVSeriesRating, newTVSeriesReview);
           this._dialogRef.close();
           break;
         default:
@@ -201,11 +206,11 @@ export class ItemEditDialogComponent implements OnInit {
   onDeleteReview(): void {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
-        this._movieReviewsService.deleteReview(this.data.id);
+        // this._reviewsService.deleteReview(this.data.id);
         this._dialogRef.close();
         break;
       case "TVSERIES":
-        this._tvReviewsService.deleteReview(this.data.id);
+        // this._reviewsService.deleteReview(this.data.id);
         this._dialogRef.close();
         break;
       default:
