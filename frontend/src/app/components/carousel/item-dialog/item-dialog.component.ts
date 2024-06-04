@@ -179,8 +179,6 @@ export class ItemDialogComponent implements OnInit{
   /** Submits review to database */
   onCreateReview(): void {
     if (this.reviewForm.valid) {
-      console.log(this.reviewForm.value);
-
       switch(this.data.movieOrTvSeries) {
         case "MOVIES":
           let newMovieReview = new Review(
