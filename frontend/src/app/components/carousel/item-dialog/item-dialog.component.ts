@@ -5,15 +5,16 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { ItemIdType } from '../../../models/item-id-type';
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
-import { MovieReviewsService } from '../../../services/movie-reviews.service';
 import { TmdbService } from '../../../services/tmdb.service';
-import { TVseriesReviewsService } from '../../../services/tvseries-reviews.service';
+import { ReviewService } from '../../../services/review.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { StarRatingComponent } from '../../star-rating/star-rating.component';
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { Review } from '../../../models/review';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-dialog',
@@ -46,10 +47,10 @@ export class ItemDialogComponent implements OnInit{
   reviewRating: number = 0;
 
   reviewForm  = new FormGroup({
-    movieId: new FormControl({value: 0, disabled: false}),
-    tvSeriesId: new FormControl({value: 0, disabled: false}),
-    rating: new FormControl({value: 0, disabled: false}, [Validators.required, Validators.pattern(/^-?(0|[1-5]\d*)?$/)]),
-    review: new FormControl({value: "", disabled: false}, [Validators.required]),
+    rating: new FormControl<number>({value: 0, disabled: false}, [Validators.required, Validators.pattern(/^-?(0|[1-5]\d*)?$/)]),
+    review: new FormControl<string>({value: "", disabled: false}, [Validators.required]),
+    category: new FormControl<string>({value: "", disabled: false}),
+    categoryId: new FormControl<number>({value: 0, disabled: false}),
   });
 
   constructor(
@@ -57,8 +58,8 @@ export class ItemDialogComponent implements OnInit{
     @Inject(MAT_DIALOG_DATA) public data: ItemIdType,
     public dialog: MatDialog,
     private _tmdbService: TmdbService,
-    private _movieReviewsService: MovieReviewsService,
-    private _tvReviewsService: TVseriesReviewsService
+    private router: Router,
+    private _reviewService: ReviewService
   ) {}
 
   /** Get movie/tvseries details and review details to populate component */
@@ -67,21 +68,21 @@ export class ItemDialogComponent implements OnInit{
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
         this.getMovieDetails();
-        if(this._movieReviewsService.getReview(this.data.id)) {
+        /*
+        if(this._reviewService.getReview(this.data.id)) {
           this.setReviewDetails(this.data.id);
         }
+        */
         //disable id based on movieOrTvSeries
-        this.reviewForm.controls['tvSeriesId'].disable();
-        this.reviewForm.controls['movieId'].setValue(this.data.id);
         break;
       case "TVSERIES":
         this.getTvSeriesDetails();
-        if(this._tvReviewsService.getReview(this.data.id)) {
+        /*
+        if(this._reviewService.getReview(this.data.id)) {
           this.setReviewDetails(this.data.id);
         }
+        */
         // disable id based on movieOrTvSeries
-        this.reviewForm.controls['movieId'].disable();
-        this.reviewForm.controls['tvSeriesId'].setValue(this.data.id);
         break;
       default:
         console.log("Movie or Tvseries Error");
@@ -150,18 +151,19 @@ export class ItemDialogComponent implements OnInit{
 
   /** Get review data and sets it */
   setReviewDetails(id:number): void {
+    /*
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
-        let currentMovieReview = this._movieReviewsService.getReview(id);
-        // console.log(currentMovieReview);
+        let currentMovieReview = this._reviewService.getReview(id);
+        console.log(currentMovieReview);
         if (currentMovieReview != undefined) {
           this.setRating(currentMovieReview.rating);
           this.reviewForm.controls['review'].setValue(currentMovieReview.review);
         }
         break;
       case "TVSERIES":
-        let currentTVSeriesReview = this._tvReviewsService.getReview(id);
-        // console.log(currentTVSeriesReview);
+        let currentTVSeriesReview = this._reviewService.getReview(id);
+        console.log(currentTVSeriesReview);
         if(currentTVSeriesReview != undefined) {
           this.setRating(currentTVSeriesReview.rating);
           this.reviewForm.controls['review'].setValue(currentTVSeriesReview.review);
@@ -171,18 +173,42 @@ export class ItemDialogComponent implements OnInit{
         console.log("Movie or Tvseries Error");
         break;
     }
+    */
   }
 
   /** Submits review to database */
   onCreateReview(): void {
     if (this.reviewForm.valid) {
+      console.log(this.reviewForm.value);
+
       switch(this.data.movieOrTvSeries) {
         case "MOVIES":
-          this._movieReviewsService.createReview(this.reviewForm.value);
+          let newMovieReview = new Review(
+            this.reviewForm.controls["rating"].value as number,
+            this.reviewForm.controls["review"].value as string,
+            "movie",
+            this.data.id
+          );
+          this._reviewService.createReview(newMovieReview).subscribe({
+            next: () => {
+              // this.router.navigate(['/']);
+              alert('Review Created!');
+            },
+            error: (error) => {
+              alert('Failed to create employee...');
+              console.error(error);
+            },
+          });
           this._dialogRef.close();
           break;
         case "TVSERIES":
-          this._tvReviewsService.createReview(this.reviewForm.value);
+          let newTVSeriesReview = new Review(
+            this.reviewForm.controls["rating"].value as number,
+            this.reviewForm.controls["review"].value as string,
+            "tvseries",
+            this.data.id
+          );
+          this._reviewService.createReview(newTVSeriesReview);
           this._dialogRef.close();
           break;
         default:
