@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, WritableSignal } from '@angular/core';
 import { TmdbService } from '../../services/tmdb.service';
 import { ReviewService } from '../../services/review.service';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { CarouselReviewItemComponent } from './carousel-review-item/carousel-review-item.component';
 import { CommonModule } from '@angular/common';
+import { Review } from '../../models/review';
 
 
 @Component({
@@ -17,12 +18,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './carousel-review.component.html',
   styleUrl: './carousel-review.component.css'
 })
-export class CarouselReviewComponent implements OnInit, OnChanges{
+export class CarouselReviewComponent implements OnInit{
 
   @Input() movieOrTvSeries: string = "";
 
+  reviews$ = {} as WritableSignal<Review[]>;
+
   title:string = ""
-  items: number[] = [];
   currentIndex = 0;
   itemWidth = 300; // Adjust as needed
   offsetX = 10;
@@ -35,14 +37,15 @@ export class CarouselReviewComponent implements OnInit, OnChanges{
   ) {}
 
   ngOnInit(): void {
+    this.loadingData = true;
     this.setTitle();
-    this.setItems();
+    this.fetchReviews();
   }
 
   /** When query search is changed, carousel item list is reset */
-  ngOnChanges(changes: SimpleChanges): void {
-    this.setItems();
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   this.setItems();
+  // }
 
   /** Sets Title or Carousel */
   setTitle(): void {
@@ -62,44 +65,22 @@ export class CarouselReviewComponent implements OnInit, OnChanges{
     }
   }
 
-  /** Reset item list first, then gets and sets list of items to be displayed */
-  setItems(): void {
-    this.items = []
-    this.loadingData = true;
-    switch(this.movieOrTvSeries) {
-      case "MOVIES": {
-        let reviews = this._reviewService.getReviews();
-        console.log(reviews);
-        /*
-        INCOMPLETE
-        for(let index=0; index<reviews.length; index++) {
-          this.items.push(reviews[index].movieId);
-        }
-        */
-        this.loadingData = false;
-        break;
-      }
-      case "TVSERIES": {
-        let reviews = this._reviewService.getReviews();
-        console.log(reviews);
-        /*
-        INCOMPLETE
-        for(let index=0; index<reviews.length; index++) {
-          this.items.push(reviews[index].tvSeriesId);
-        }
-        */
-        this.loadingData = false;
-        break;
-      }
-      default:
-        console.log("Issue with datalisttype");
-        break;
-    }
+  /** NOT USED YET */
+  deleteReview(id: string): void {
+    this._reviewService.deleteReview(id).subscribe({
+      next: () => this.fetchReviews(),
+    });
+  }
+
+  private fetchReviews(): void {
+    this.reviews$ = this._reviewService.reviews$;
+    this._reviewService.getReviews();
+    this.loadingData = false;
   }
 
   /** Moves carousel to next index */
   next(): void {
-    if (this.currentIndex < this.items.length - 1) {
+    if (this.currentIndex < this.reviews$.length - 1) {
       this.currentIndex++;
       this.offsetX = -this.currentIndex * this.itemWidth;
     }
@@ -115,6 +96,6 @@ export class CarouselReviewComponent implements OnInit, OnChanges{
 
   /** Checks if last item in list of items */
   isLastItem(): boolean {
-    return this.currentIndex >= this.items.length - 10;
+    return this.currentIndex >= this.reviews$.length - 10;
   }
 }

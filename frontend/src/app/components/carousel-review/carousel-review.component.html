@@ -5,16 +5,15 @@
 
       <h3 class="carousel-title">{{ title }}</h3>
 
-      <div *ngIf="items.length>0; else noReviews">
+      <div *ngIf="reviews$().length>0; else noReviews">
         <div class="carousel-inner" [style.transform]="'translateX(' + offsetX + 'px)'">
-          <div class="carousel-item" *ngFor="let item of items">
-              <!-- <app-carousel-review-item [id]="item" [movieOrTvSeries]="movieOrTvSeries"></app-carousel-review-item> -->
-              <app-carousel-review-item></app-carousel-review-item>
+          <div class="carousel-item" *ngFor="let review of reviews$()">
+              <app-carousel-review-item [movieOrTvSeries]="movieOrTvSeries" [categoryId]="review.categoryId"></app-carousel-review-item>
           </div>
         </div>
       </div>
 
-      <div *ngIf="items.length>3" class="carousel-controls">
+      <div *ngIf="reviews$.length>3" class="carousel-controls">
         <button (click)="prev()">&lt;</button>
         <button (click)="next()" *ngIf="!isLastItem()">&gt;</button>
       </div>
