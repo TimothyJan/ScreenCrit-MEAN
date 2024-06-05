@@ -25,6 +25,11 @@ async function applySchemaValidation(db: mongodb.Db) {
             additionalProperties: false,
             properties: {
                 _id: {},
+                category: {
+                    bsonType: "string",
+                    description: "'category' is required and is a string",
+                    minLength: 1
+                },
                 rating: {
                     bsonType: "number",
                     description: "'rating' is required and is a number",
@@ -33,6 +38,10 @@ async function applySchemaValidation(db: mongodb.Db) {
                     bsonType: "string",
                     description: "'review' is required and is a string",
                     minLength: 1
+                },
+                tmdbId: {
+                    bsonType: "number",
+                    description: "'tmdbId' is required and is a number",
                 },
             },
         },

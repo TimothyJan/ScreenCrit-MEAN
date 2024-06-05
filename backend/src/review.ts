@@ -1,9 +1,9 @@
 import * as mongodb from "mongodb";
 
 export interface Review {
+    category: "movie" | "tvseries";
     rating: number;
     review: string;
-    category: "movie" | "tvseries";
-    categoryId: number;
+    tmdbId: number;
     _id?: mongodb.ObjectId;
 }
