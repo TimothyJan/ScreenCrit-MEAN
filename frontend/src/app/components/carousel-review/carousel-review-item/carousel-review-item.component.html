@@ -5,7 +5,7 @@
       <div class="card">
         <div class="image">
           <a [routerLink]="" (click)="openEditDialog()">
-            <img [src]="movieDetails.poster_path" alt="{{ movieDetails.title }}">
+            <img [src]="movieDetails.poster_path" [width]="imgWidth" [height]="imgHeight" alt="{{ movieDetails.title }}">
           </a>
         </div>
         <div class="content">
@@ -24,7 +24,7 @@
       <div class="card">
         <div class="image">
           <a [routerLink]="" (click)="openEditDialog()">
-            <img [src]="tvSeriesDetails.poster_path" alt="{{ tvSeriesDetails.name }}">
+            <img [src]="tvSeriesDetails.poster_path" [width]="imgWidth" [height]="imgHeight" alt="{{ tvSeriesDetails.name }}">
           </a>
         </div>
         <div class="content">

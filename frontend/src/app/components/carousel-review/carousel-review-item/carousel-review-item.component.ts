@@ -28,11 +28,14 @@ import { ItemEditDialogComponent } from '../item-edit-dialog/item-edit-dialog.co
   styleUrl: './carousel-review-item.component.css'
 })
 export class CarouselReviewItemComponent implements OnInit {
-  @Input() id: number = 0; // Movie or TV id
   @Input() movieOrTvSeries: string = ""; // MOVIES or TVSERIES****
+  @Input() categoryId: number = 0; // Movie or TV id
   movieDetails: MovieDetails;
   tvSeriesDetails: TVSeriesDetails;
   loadingData: boolean = true;
+
+  imgWidth:number = 210;
+  imgHeight:number = 350;
 
   // For star highlight component input to display highlighted stars in review mode
   reviewRating: number;
@@ -44,6 +47,10 @@ export class CarouselReviewItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getDetails()
+  }
+
+  getDetails(): void {
     switch(this.movieOrTvSeries) {
       case "MOVIES":
         this.getMovieDetails();
@@ -69,7 +76,7 @@ export class CarouselReviewItemComponent implements OnInit {
 
   /** Get Movie Details */
   getMovieDetails(): void {
-    this._tmdbService.getMovieDetails(this.id)
+    this._tmdbService.getMovieDetails(this.categoryId)
     .subscribe(
       data => {
         // console.log(data);
@@ -86,12 +93,13 @@ export class CarouselReviewItemComponent implements OnInit {
 
   /** Set Movie details */
   setMovieCardDetails(): void {
-    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.movieDetails.poster_path;
+    // this.movieDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.movieDetails.poster_path;
+    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/w342/` + this.movieDetails.poster_path;
   }
 
   /** Get TV Series Details */
   getTvSeriesDetails(): void {
-    this._tmdbService.getTVSeriesDetails(this.id)
+    this._tmdbService.getTVSeriesDetails(this.categoryId)
     .subscribe(
       data => {
       // console.log(data);
@@ -108,7 +116,8 @@ export class CarouselReviewItemComponent implements OnInit {
 
   /** Set TV Series Details */
   setTvSeriesCardDetails(): void {
-    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.tvSeriesDetails.poster_path;
+    // this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.tvSeriesDetails.poster_path;
+    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/w342/` + this.tvSeriesDetails.poster_path;
   }
 
   setStarRating(): void {
@@ -142,7 +151,7 @@ export class CarouselReviewItemComponent implements OnInit {
   openEditDialog(): void {
     const dialogRef = this.dialog.open(ItemEditDialogComponent, {
       data: {
-        id: this.id,
+        id: this.categoryId,
         movieOrTvSeries: this.movieOrTvSeries
       },
     });
