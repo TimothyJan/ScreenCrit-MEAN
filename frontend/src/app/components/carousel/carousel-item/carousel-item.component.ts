@@ -45,6 +45,10 @@ export class CarouselItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getDetails();
+  }
+
+  getDetails(): void {
     switch(this.movieOrTvSeries) {
       case "MOVIES":
         this.getMovieDetails();
