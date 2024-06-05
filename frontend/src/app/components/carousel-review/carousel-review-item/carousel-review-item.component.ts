@@ -29,7 +29,7 @@ import { ItemEditDialogComponent } from '../item-edit-dialog/item-edit-dialog.co
 })
 export class CarouselReviewItemComponent implements OnInit {
   @Input() movieOrTvSeries: string = ""; // MOVIES or TVSERIES****
-  @Input() categoryId: number = 0; // Movie or TV id
+  @Input() tmdbId: number = 0; // Movie or TV id
   movieDetails: MovieDetails;
   tvSeriesDetails: TVSeriesDetails;
   loadingData: boolean = true;
@@ -47,6 +47,8 @@ export class CarouselReviewItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.tmdbId);
+
     this.getDetails()
   }
 
@@ -76,7 +78,7 @@ export class CarouselReviewItemComponent implements OnInit {
 
   /** Get Movie Details */
   getMovieDetails(): void {
-    this._tmdbService.getMovieDetails(this.categoryId)
+    this._tmdbService.getMovieDetails(this.tmdbId)
     .subscribe(
       data => {
         // console.log(data);
@@ -99,7 +101,7 @@ export class CarouselReviewItemComponent implements OnInit {
 
   /** Get TV Series Details */
   getTvSeriesDetails(): void {
-    this._tmdbService.getTVSeriesDetails(this.categoryId)
+    this._tmdbService.getTVSeriesDetails(this.tmdbId)
     .subscribe(
       data => {
       // console.log(data);
@@ -151,7 +153,7 @@ export class CarouselReviewItemComponent implements OnInit {
   openEditDialog(): void {
     const dialogRef = this.dialog.open(ItemEditDialogComponent, {
       data: {
-        id: this.categoryId,
+        id: this.tmdbId,
         movieOrTvSeries: this.movieOrTvSeries
       },
     });

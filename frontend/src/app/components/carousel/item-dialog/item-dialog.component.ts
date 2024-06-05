@@ -2,19 +2,23 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { StarRatingComponent } from '../../star-rating/star-rating.component';
+
+import { TmdbService } from '../../../services/tmdb.service';
+import { ReviewService } from '../../../services/review.service';
+
 import { ItemIdType } from '../../../models/item-id-type';
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
-import { TmdbService } from '../../../services/tmdb.service';
-import { ReviewService } from '../../../services/review.service';
+import { Review } from '../../../models/review';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { StarRatingComponent } from '../../star-rating/star-rating.component';
-import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
-import { Review } from '../../../models/review';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-dialog',
@@ -28,7 +32,7 @@ import { Router } from '@angular/router';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    StarRatingComponent,
+    StarRatingComponent
   ],
   templateUrl: './item-dialog.component.html',
   styleUrl: './item-dialog.component.css'
@@ -149,43 +153,16 @@ export class ItemDialogComponent implements OnInit{
     this.reviewForm.controls['rating'].setValue(rating);
   }
 
-  /** Get review data and sets it */
-  setReviewDetails(id:number): void {
-    /*
-    switch(this.data.movieOrTvSeries) {
-      case "MOVIES":
-        let currentMovieReview = this._reviewService.getReview(id);
-        console.log(currentMovieReview);
-        if (currentMovieReview != undefined) {
-          this.setRating(currentMovieReview.rating);
-          this.reviewForm.controls['review'].setValue(currentMovieReview.review);
-        }
-        break;
-      case "TVSERIES":
-        let currentTVSeriesReview = this._reviewService.getReview(id);
-        console.log(currentTVSeriesReview);
-        if(currentTVSeriesReview != undefined) {
-          this.setRating(currentTVSeriesReview.rating);
-          this.reviewForm.controls['review'].setValue(currentTVSeriesReview.review);
-        }
-        break;
-      default:
-        console.log("Movie or Tvseries Error");
-        break;
-    }
-    */
-  }
-
   /** Submits review to database */
   onCreateReview(): void {
     if (this.reviewForm.valid) {
       switch(this.data.movieOrTvSeries) {
         case "MOVIES":
           let newMovieReview = new Review(
+            "movie",
             this.reviewForm.controls["rating"].value as number,
             this.reviewForm.controls["review"].value as string,
-            "movie",
-            this.data.id
+            this.data.id,
           );
           this._reviewService.createReview(newMovieReview).subscribe({
             next: () => {
@@ -201,9 +178,9 @@ export class ItemDialogComponent implements OnInit{
           break;
         case "TVSERIES":
           let newTVSeriesReview = new Review(
+            "tvseries",
             this.reviewForm.controls["rating"].value as number,
             this.reviewForm.controls["review"].value as string,
-            "tvseries",
             this.data.id
           );
           this._reviewService.createReview(newTVSeriesReview);

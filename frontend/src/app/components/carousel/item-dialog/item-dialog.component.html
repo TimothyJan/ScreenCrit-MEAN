@@ -42,9 +42,7 @@
               <div class="review-item">
                 <mat-label>Rating (out of 5):</mat-label>
                 <br>
-                <!-- <app-star-rating [(rating)]="rating"></app-star-rating> -->
                 <app-star-rating [rating]="reviewRating" [canEditRating]="true" (ratingChange)="setRating($event)"></app-star-rating>
-                <!-- <input matInput type="number" min="0" max="5" formControlName="rating"> -->
               </div>
               <!-- Rating Error -->
               <div class="rating-error">
@@ -64,7 +62,6 @@
                   <textarea matInput placeholder="This movie made me feel..." rows="3" formControlName="review"></textarea>
                 </mat-form-field>
               </div>
-              <!-- Review Error -->
               <div class="review-error">
                 <div *ngIf="(reviewForm.controls['review'].dirty || reviewForm.controls['review'].touched)">
                   <div *ngIf="reviewForm.controls['review'].errors?.['required']">
@@ -99,8 +96,6 @@
                 <mat-label>Rating (out of 5):</mat-label>
                 <br>
                 <app-star-rating [rating]="reviewRating" [canEditRating]="true" (ratingChange)="setRating($event)"></app-star-rating>
-                <!-- <app-star-rating [rating]=0 (ratingChange)="setRating($event)"></app-star-rating> -->
-                <!-- <input matInput type="number" min="0" max="5" formControlName="rating"> -->
               </div>
             <div class="rating-error">
               <div *ngIf="(reviewForm.controls['rating'].dirty || reviewForm.controls['rating'].touched)">
