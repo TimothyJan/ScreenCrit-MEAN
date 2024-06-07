@@ -1,7 +1,7 @@
 import * as mongodb from "mongodb";
 
 export interface Review {
-    category: "movie" | "tvseries";
+    category: "MOVIES" | "TVSERIES";
     rating: number;
     review: string;
     tmdbId: number;

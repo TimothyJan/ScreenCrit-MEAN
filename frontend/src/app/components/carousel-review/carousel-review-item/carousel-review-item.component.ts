@@ -47,8 +47,6 @@ export class CarouselReviewItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.tmdbId);
-
     this.getDetails()
   }
 

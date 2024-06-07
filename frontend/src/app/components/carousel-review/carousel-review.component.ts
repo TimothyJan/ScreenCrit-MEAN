@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, WritableSignal } from '@angular/core';
-import { TmdbService } from '../../services/tmdb.service';
 import { ReviewService } from '../../services/review.service';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { CarouselReviewItemComponent } from './carousel-review-item/carousel-review-item.component';
@@ -18,7 +17,7 @@ import { Review } from '../../models/review';
   templateUrl: './carousel-review.component.html',
   styleUrl: './carousel-review.component.css'
 })
-export class CarouselReviewComponent implements OnInit{
+export class CarouselReviewComponent implements OnInit {
 
   @Input() movieOrTvSeries: string = "";
 
@@ -32,7 +31,6 @@ export class CarouselReviewComponent implements OnInit{
   loadingData: boolean = true;
 
   constructor(
-    private _tmdbService: TmdbService,
     private _reviewService: ReviewService
   ) {}
 
@@ -40,6 +38,7 @@ export class CarouselReviewComponent implements OnInit{
     this.loadingData = true;
     this.setTitle();
     this.fetchReviews();
+    console.log(this.reviews$());
   }
 
   /** When query search is changed, carousel item list is reset */

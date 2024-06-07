@@ -159,7 +159,7 @@ export class ItemDialogComponent implements OnInit{
       switch(this.data.movieOrTvSeries) {
         case "MOVIES":
           let newMovieReview = new Review(
-            "movie",
+            "MOVIES",
             this.reviewForm.controls["rating"].value as number,
             this.reviewForm.controls["review"].value as string,
             this.data.id,
@@ -178,12 +178,21 @@ export class ItemDialogComponent implements OnInit{
           break;
         case "TVSERIES":
           let newTVSeriesReview = new Review(
-            "tvseries",
+            "TVSERIES",
             this.reviewForm.controls["rating"].value as number,
             this.reviewForm.controls["review"].value as string,
             this.data.id
           );
-          this._reviewService.createReview(newTVSeriesReview);
+          this._reviewService.createReview(newTVSeriesReview).subscribe({
+            next: () => {
+              // this.router.navigate(['/']);
+              alert('Review Created!');
+            },
+            error: (error) => {
+              alert('Failed to create employee...');
+              console.error(error);
+            },
+          });
           this._dialogRef.close();
           break;
         default:

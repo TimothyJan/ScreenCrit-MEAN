@@ -1,11 +1,11 @@
 export class Review {
-  category: "movie" | "tvseries";
+  category: "MOVIES" | "TVSERIES";
   rating: number;
   review: string;
   tmdbId: number;
   _id?: number;
 
-  constructor(category: "movie" | "tvseries", rating: number, review: string, tmdbId: number, _id?: number) {
+  constructor(category: "MOVIES" | "TVSERIES", rating: number, review: string, tmdbId: number, _id?: number) {
     this.category = category;
     this.rating = rating;
     this.review = review;
