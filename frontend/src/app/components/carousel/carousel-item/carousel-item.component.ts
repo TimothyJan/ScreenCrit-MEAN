@@ -29,7 +29,7 @@ import { ItemDialogComponent } from '../item-dialog/item-dialog.component';
 })
 
 export class CarouselItemComponent implements OnInit {
-  @Input() id: number = 0;
+  @Input() tmdbId: number = 0;
   @Input() movieOrTvSeries: string = ""; // MOVIES or TVSERIES****
 
   movieDetails: MovieDetails;
@@ -64,7 +64,7 @@ export class CarouselItemComponent implements OnInit {
 
   /** Get Movie Details */
   getMovieDetails(): void {
-    this._tmdbService.getMovieDetails(this.id)
+    this._tmdbService.getMovieDetails(this.tmdbId)
     .subscribe(
       data => {
         this.movieDetails = {...data};
@@ -85,7 +85,7 @@ export class CarouselItemComponent implements OnInit {
 
   /** Get TV Series Details */
   getTvSeriesDetails(): void {
-    this._tmdbService.getTVSeriesDetails(this.id)
+    this._tmdbService.getTVSeriesDetails(this.tmdbId)
     .subscribe(
       data => {
       // console.log(data);
@@ -109,7 +109,7 @@ export class CarouselItemComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(ItemDialogComponent, {
       data: {
-        id: this.id,
+        tmdbId: this.tmdbId,
         movieOrTvSeries: this.movieOrTvSeries
       },
     });

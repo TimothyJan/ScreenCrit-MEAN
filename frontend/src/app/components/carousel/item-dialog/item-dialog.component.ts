@@ -10,7 +10,6 @@ import { StarRatingComponent } from '../../star-rating/star-rating.component';
 import { TmdbService } from '../../../services/tmdb.service';
 import { ReviewService } from '../../../services/review.service';
 
-import { ItemIdType } from '../../../models/item-id-type';
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
 import { Review } from '../../../models/review';
@@ -19,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { CarouselDialogData } from '../../../models/carousel-dialog-data';
 
 @Component({
   selector: 'app-item-dialog',
@@ -51,15 +51,15 @@ export class ItemDialogComponent implements OnInit{
   reviewRating: number = 0;
 
   reviewForm  = new FormGroup({
+    category: new FormControl<string>({value: "", disabled: false}),
     rating: new FormControl<number>({value: 0, disabled: false}, [Validators.required, Validators.pattern(/^-?(0|[1-5]\d*)?$/)]),
     review: new FormControl<string>({value: "", disabled: false}, [Validators.required]),
-    category: new FormControl<string>({value: "", disabled: false}),
-    categoryId: new FormControl<number>({value: 0, disabled: false}),
+    tmdbId: new FormControl<number>({value: 0, disabled: false}),
   });
 
   constructor(
     private _dialogRef: MatDialogRef<ItemDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ItemIdType,
+    @Inject(MAT_DIALOG_DATA) public data: CarouselDialogData,
     public dialog: MatDialog,
     private _tmdbService: TmdbService,
     private router: Router,
@@ -68,25 +68,23 @@ export class ItemDialogComponent implements OnInit{
 
   /** Get movie/tvseries details and review details to populate component */
   ngOnInit(): void {
+    this.setDialogSize();
+    this.getAndSetCardDetails();
+  }
+
+  /** Sets dialog size */
+  setDialogSize():void {
     this._dialogRef.updateSize("1050px", "500px");
+  }
+
+  /** Get and set Card Details */
+  getAndSetCardDetails(): void {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
-        this.getMovieDetails();
-        /*
-        if(this._reviewService.getReview(this.data.id)) {
-          this.setReviewDetails(this.data.id);
-        }
-        */
-        //disable id based on movieOrTvSeries
+        this.getAndSetMovieDetails();
         break;
       case "TVSERIES":
-        this.getTvSeriesDetails();
-        /*
-        if(this._reviewService.getReview(this.data.id)) {
-          this.setReviewDetails(this.data.id);
-        }
-        */
-        // disable id based on movieOrTvSeries
+        this.getAndSetTvSeriesDetails();
         break;
       default:
         console.log("Movie or Tvseries Error");
@@ -95,11 +93,10 @@ export class ItemDialogComponent implements OnInit{
   }
 
   /** Get Movie Details */
-  getMovieDetails(): void {
-    this._tmdbService.getMovieDetails(this.data.id)
+  getAndSetMovieDetails(): void {
+    this._tmdbService.getMovieDetails(this.data.tmdbId)
     .subscribe(
       data => {
-        // console.log(data);
         this.movieDetails = {...data};
         this.setMovieDetails();
         this.loadingData = false;
@@ -121,11 +118,10 @@ export class ItemDialogComponent implements OnInit{
   }
 
   /** Get TV Series Details */
-  getTvSeriesDetails(): void {
-    this._tmdbService.getTVSeriesDetails(this.data.id)
+  getAndSetTvSeriesDetails(): void {
+    this._tmdbService.getTVSeriesDetails(this.data.tmdbId)
     .subscribe(
       data => {
-      // console.log(data);
       this.tvSeriesDetails = {...data};
       this.setTvSeriesCardDetails();
       this.loadingData = false;
@@ -162,7 +158,7 @@ export class ItemDialogComponent implements OnInit{
             "MOVIES",
             this.reviewForm.controls["rating"].value as number,
             this.reviewForm.controls["review"].value as string,
-            this.data.id,
+            this.data.tmdbId,
           );
           this._reviewService.createMovieReview(newMovieReview).subscribe({
             next: () => {
@@ -181,7 +177,7 @@ export class ItemDialogComponent implements OnInit{
             "TVSERIES",
             this.reviewForm.controls["rating"].value as number,
             this.reviewForm.controls["review"].value as string,
-            this.data.id
+            this.data.tmdbId
           );
           this._reviewService.createTVReview(newTVSeriesReview).subscribe({
             next: () => {

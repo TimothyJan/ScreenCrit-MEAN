@@ -8,7 +8,7 @@
       <div *ngIf="items.length>0;">
         <div class="carousel-inner" [style.transform]="'translateX(' + offsetX + 'px)'">
           <div class="carousel-item" *ngFor="let item of items">
-              <app-carousel-item [id]="item" [movieOrTvSeries]="movieOrTvSeries"></app-carousel-item>
+              <app-carousel-item [tmdbId]="item" [movieOrTvSeries]="movieOrTvSeries"></app-carousel-item>
           </div>
         </div>
       </div>
