@@ -38,7 +38,6 @@ export class CarouselReviewComponent implements OnInit {
     this.loadingData = true;
     this.setTitle();
     this.fetchReviews();
-    console.log(this.reviews$());
   }
 
   /** When query search is changed, carousel item list is reset */
@@ -66,14 +65,43 @@ export class CarouselReviewComponent implements OnInit {
 
   /** NOT USED YET */
   deleteReview(id: string): void {
-    this._reviewService.deleteReview(id).subscribe({
-      next: () => this.fetchReviews(),
-    });
+    switch(this.movieOrTvSeries) {
+      case "MOVIES": {
+        this._reviewService.deleteMovieReview(id).subscribe({
+          next: () => this.fetchReviews(),
+        });
+        break;
+      }
+      case "TVSERIES": {
+        this._reviewService.deleteTVReview(id).subscribe({
+          next: () => this.fetchReviews(),
+        });
+        break;
+      }
+      default: {
+        this.title = "Issue with :" + this.movieOrTvSeries;
+        break;
+      }
+    }
   }
 
   private fetchReviews(): void {
-    this.reviews$ = this._reviewService.reviews$;
-    this._reviewService.getReviews();
+    switch(this.movieOrTvSeries) {
+      case "MOVIES": {
+        this.reviews$ = this._reviewService.movieReviews$;
+        this._reviewService.getMovieReviews();
+        break;
+      }
+      case "TVSERIES": {
+        this.reviews$ = this._reviewService.tvReviews$;
+        this._reviewService.getTVReviews();
+        break;
+      }
+      default: {
+        this.title = "Issue with Title ";
+        break;
+      }
+    }
     this.loadingData = false;
   }
 

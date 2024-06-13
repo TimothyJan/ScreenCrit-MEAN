@@ -164,7 +164,7 @@ export class ItemDialogComponent implements OnInit{
             this.reviewForm.controls["review"].value as string,
             this.data.id,
           );
-          this._reviewService.createReview(newMovieReview).subscribe({
+          this._reviewService.createMovieReview(newMovieReview).subscribe({
             next: () => {
               // this.router.navigate(['/']);
               alert('Review Created!');
@@ -183,7 +183,7 @@ export class ItemDialogComponent implements OnInit{
             this.reviewForm.controls["review"].value as string,
             this.data.id
           );
-          this._reviewService.createReview(newTVSeriesReview).subscribe({
+          this._reviewService.createTVReview(newTVSeriesReview).subscribe({
             next: () => {
               // this.router.navigate(['/']);
               alert('Review Created!');
