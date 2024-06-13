@@ -8,7 +8,7 @@
       <div *ngIf="reviews$().length>0; else noReviews">
         <div class="carousel-inner" [style.transform]="'translateX(' + offsetX + 'px)'">
           <div class="carousel-item" *ngFor="let review of reviews$()">
-            <app-carousel-review-item [movieOrTvSeries]="review.category" [tmdbId]="review.tmdbId"></app-carousel-review-item>
+            <app-carousel-review-item [movieOrTvSeries]="review.category" [tmdbId]="review.tmdbId" [review_id]="review._id!"></app-carousel-review-item>
           </div>
         </div>
       </div>
