@@ -3,9 +3,9 @@ export class Review {
   rating: number;
   review: string;
   tmdbId: number;
-  _id?: number;
+  _id?: string;
 
-  constructor(category: "MOVIES" | "TVSERIES", rating: number, review: string, tmdbId: number, _id?: number) {
+  constructor(category: "MOVIES" | "TVSERIES", rating: number, review: string, tmdbId: number, _id?: string) {
     this.category = category;
     this.rating = rating;
     this.review = review;
