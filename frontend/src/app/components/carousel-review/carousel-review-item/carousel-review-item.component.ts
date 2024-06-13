@@ -52,7 +52,7 @@ export class CarouselReviewItemComponent implements OnInit {
     this.setStarRating();
   }
 
-  /** Get and set card Details */
+  /** Get and set Card Details */
   getAndSetCardDetails(): void {
     switch(this.movieOrTvSeries) {
       case "MOVIES":
