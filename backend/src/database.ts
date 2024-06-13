@@ -2,7 +2,8 @@ import * as mongodb from "mongodb";
 import { Review } from "./review";
 
 export const collections: {
-    reviews?: mongodb.Collection<Review>;
+    tvReviews?: mongodb.Collection<Review>;
+    movieReviews?: mongodb.Collection<Review>;
 } = {};
 
 export async function connectToDatabase(uri: string) {
@@ -10,14 +11,16 @@ export async function connectToDatabase(uri: string) {
     await client.connect();
 
     const db = client.db("Reviews");
-    await applySchemaValidation(db);
+    await applySchemaValidation(db, "TVReviews");
+    await applySchemaValidation(db, "MovieReviews");
 
-    const reviewsCollection = db.collection<Review>("Reviews");
-    collections.reviews = reviewsCollection;
+    const tvReviewsCollection = db.collection<Review>("TVReviews");
+    const movieReviewsCollection = db.collection<Review>("MovieReviews");
+    collections.tvReviews = tvReviewsCollection;
+    collections.movieReviews = movieReviewsCollection;
 }
 
-// Update our existing collection with JSON schema validation so we know our documents will always match the shape of our Employee model, even if added elsewhere.
-async function applySchemaValidation(db: mongodb.Db) {
+async function applySchemaValidation(db: mongodb.Db, collectionName: string) {
     const jsonSchema = {
         $jsonSchema: {
             bsonType: "object",
@@ -49,11 +52,11 @@ async function applySchemaValidation(db: mongodb.Db) {
 
   // Try applying the modification to the collection, if the collection doesn't exist, create it
    await db.command({
-        collMod: "reviews",
+        collMod: collectionName,
         validator: jsonSchema
     }).catch(async (error: mongodb.MongoServerError) => {
         if (error.codeName === "NamespaceNotFound") {
-            await db.createCollection("reviews", {validator: jsonSchema});
+            await db.createCollection(collectionName, {validator: jsonSchema});
         }
     });
 }
