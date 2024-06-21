@@ -54,6 +54,7 @@ export class CarouselReviewItemComponent implements OnInit {
     this.getAndSetCardDetails();
     this.getReview();
     this.setStarRating();
+    this.loadingData = false;
   }
 
   /** Get and set Card Details */
@@ -120,7 +121,6 @@ export class CarouselReviewItemComponent implements OnInit {
       case "TVSERIES":
         this._reviewService.getTVReview(this.review_id);
         this.currentTVSeriesReview$ = this._reviewService.review$;
-        this.loadingData = false;
         break;
       default:
         console.log("Movie or Tvseries Error");
@@ -135,7 +135,6 @@ export class CarouselReviewItemComponent implements OnInit {
         if (this.currentMovieReview$() != undefined) {
           this.reviewRating = this.currentMovieReview$().rating;
         }
-        this.loadingData = false;
         break;
       case "TVSERIES":
         if (this.currentTVSeriesReview$() != undefined) {
