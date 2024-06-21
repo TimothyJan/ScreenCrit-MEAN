@@ -40,11 +40,6 @@ export class CarouselReviewComponent implements OnInit {
     this.fetchReviews();
   }
 
-  /** When query search is changed, carousel item list is reset */
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   this.setItems();
-  // }
-
   /** Sets Title or Carousel */
   setTitle(): void {
     switch(this.movieOrTvSeries) {
