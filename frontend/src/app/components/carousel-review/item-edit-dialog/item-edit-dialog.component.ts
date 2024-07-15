@@ -14,6 +14,7 @@ import { StarRatingComponent } from '../../star-rating/star-rating.component';
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 import { CarouselReviewDialogData } from '../../../models/carousel-review-dialog-data';
 import { Review } from '../../../models/review';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-item-edit-dialog',
@@ -59,7 +60,9 @@ export class ItemEditDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: CarouselReviewDialogData,
     public dialog: MatDialog,
     private _tmdbService: TmdbService,
-    private _reviewService: ReviewService
+    private _reviewService: ReviewService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   /** Get movie/tvseries details and review details to populate component */
@@ -140,15 +143,17 @@ export class ItemEditDialogComponent implements OnInit {
   }
 
   /** Get review data */
-  getReview(): void {
+  private getReview(): void {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
         this._reviewService.getMovieReview(this.data.review_id);
         this.currentMovieReview$ = this._reviewService.review$;
+        console.log(this.currentMovieReview$());
         break;
       case "TVSERIES":
         this._reviewService.getTVReview(this.data.review_id);
         this.currentTVSeriesReview$ = this._reviewService.review$;
+        console.log(this.currentTVSeriesReview$());
         break;
       default:
         console.log("Movie or Tvseries Error");
@@ -206,15 +211,31 @@ export class ItemEditDialogComponent implements OnInit {
     if (this.reviewForm.valid) {
       switch(this.data.movieOrTvSeries) {
         case "MOVIES":
-          let newMovieRating = this.reviewForm.value.rating || 0;
-          let newMovieReview = this.reviewForm.value.review || "";
-          // this._reviewsService.editReview(this.data.tmdbId, newMovieRating, newMovieReview);
+          let newMovieReview = new Review("MOVIES", this.reviewForm.value.rating || 0, this.reviewForm.value.review || "", this.data.tmdbId);
+          this._reviewService.updateMovieReview(this.data.review_id, newMovieReview)
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/reviews']);
+            },
+            error: (error) => {
+              alert('Failed to update employee');
+              console.error(error);
+            },
+          });
           this._dialogRef.close();
           break;
         case "TVSERIES":
-          let newTVSeriesRating = this.reviewForm.value.rating || 0;
-          let newTVSeriesReview = this.reviewForm.value.review || "";
-          // this._reviewsService.editReview(this.data.tmdbId, newTVSeriesRating, newTVSeriesReview);
+          let newTVSeriesReview = new Review("TVSERIES", this.reviewForm.value.rating || 0, this.reviewForm.value.review || "", this.data.tmdbId);
+          this._reviewService.updateTVReview(this.data.review_id, newTVSeriesReview)
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/reviews']);
+            },
+            error: (error) => {
+              alert('Failed to update employee');
+              console.error(error);
+            },
+          });;
           this._dialogRef.close();
           break;
         default:
