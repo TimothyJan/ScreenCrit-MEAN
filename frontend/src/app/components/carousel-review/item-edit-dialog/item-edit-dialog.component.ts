@@ -218,7 +218,7 @@ export class ItemEditDialogComponent implements OnInit {
               this.router.navigate(['/reviews']);
             },
             error: (error) => {
-              alert('Failed to update employee');
+              alert('Failed to update Movie Review');
               console.error(error);
             },
           });
@@ -232,7 +232,7 @@ export class ItemEditDialogComponent implements OnInit {
               this.router.navigate(['/reviews']);
             },
             error: (error) => {
-              alert('Failed to update employee');
+              alert('Failed to update TV Series Review');
               console.error(error);
             },
           });;
@@ -249,11 +249,29 @@ export class ItemEditDialogComponent implements OnInit {
   onDeleteReview(): void {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
-        // this._reviewsService.deleteReview(this.data.tmdbId);
+        this._reviewService.deleteMovieReview(this.data.review_id)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/reviews']);
+          },
+          error: (error) => {
+            alert('Failed to delete review');
+            console.error(error);
+          },
+        });
         this._dialogRef.close();
         break;
       case "TVSERIES":
-        // this._reviewsService.deleteReview(this.data.tmdbId);
+        this._reviewService.deleteTVReview(this.data.review_id)
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/reviews']);
+          },
+          error: (error) => {
+            alert('Failed to delete review');
+            console.error(error);
+          },
+        });
         this._dialogRef.close();
         break;
       default:
