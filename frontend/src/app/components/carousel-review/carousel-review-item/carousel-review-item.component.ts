@@ -52,14 +52,8 @@ export class CarouselReviewItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('Component initialized with:', {
-      movieOrTvSeries: this.movieOrTvSeries,
-      tmdbId: this.tmdbId,
-      review_id: this.review_id
-    });
     this.getReview();
     this.getAndSetCardDetails();
-    // this.setStarRating();
   }
 
   /** Get and set Card Details */
@@ -82,7 +76,6 @@ export class CarouselReviewItemComponent implements OnInit {
     this._tmdbService.getMovieDetails(this.tmdbId)
     .subscribe(
       data => {
-        console.log('Fetched movie details:', data);
         this.movieDetails = {...data};
         this.setMovieCardPoster();
       },
@@ -97,7 +90,6 @@ export class CarouselReviewItemComponent implements OnInit {
     this._tmdbService.getTVSeriesDetails(this.tmdbId)
     .subscribe(
       data => {
-      console.log('Fetched TV series details:', data);
       this.tvSeriesDetails = {...data};
       this.setTvSeriesCardPoster();
       },
@@ -125,7 +117,6 @@ export class CarouselReviewItemComponent implements OnInit {
       case "MOVIES":
         this._reviewService.getMovieReview(this.review_id)
         .subscribe(review => {
-          console.log('Fetched movie review:', review);
           this.currentReview.set(review);
           this.loadingData.set(false);
         });
@@ -133,7 +124,6 @@ export class CarouselReviewItemComponent implements OnInit {
       case "TVSERIES":
         this._reviewService.getTVReview(this.review_id)
         .subscribe(review => {
-          console.log('Fetched TV series review:', review);
           this.currentReview.set(review);
           this.loadingData.set(false);
         });

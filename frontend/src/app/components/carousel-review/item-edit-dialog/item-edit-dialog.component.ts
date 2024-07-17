@@ -222,7 +222,8 @@ export class ItemEditDialogComponent implements OnInit {
               console.error(error);
             },
           });
-          this._dialogRef.close();
+          this._reviewService.refreshMovieReviews();
+          this._dialogRef.close()
           break;
         case "TVSERIES":
           let newTVSeriesReview = new Review("TVSERIES", this.reviewForm.value.rating || 0, this.reviewForm.value.review || "", this.data.tmdbId);
@@ -235,7 +236,8 @@ export class ItemEditDialogComponent implements OnInit {
               alert('Failed to update TV Series Review');
               console.error(error);
             },
-          });;
+          });
+          this._reviewService.refreshTVReviews();
           this._dialogRef.close();
           break;
         default:
@@ -259,6 +261,7 @@ export class ItemEditDialogComponent implements OnInit {
             console.error(error);
           },
         });
+        // this._reviewService.refreshMovieReviews();
         this._dialogRef.close();
         break;
       case "TVSERIES":
@@ -272,6 +275,7 @@ export class ItemEditDialogComponent implements OnInit {
             console.error(error);
           },
         });
+        // this._reviewService.refreshTVReviews();
         this._dialogRef.close();
         break;
       default:

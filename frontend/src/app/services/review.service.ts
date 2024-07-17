@@ -15,7 +15,7 @@ export class ReviewService {
   constructor(private httpClient: HttpClient) { }
 
   /** Refresh Movie Reviews */
-  private refreshMovieReviews() {
+  refreshMovieReviews() {
     this.httpClient.get<Review[]>(`${this.url}/movie-reviews`)
       .subscribe(reviews => {
         this.movieReviews$.set(reviews);
@@ -24,7 +24,7 @@ export class ReviewService {
   }
 
   /** Refresh TV Reviews */
-  private refreshTVReviews() {
+  refreshTVReviews() {
     this.httpClient.get<Review[]>(`${this.url}/tv-reviews`)
       .subscribe(reviews => {
         this.tvReviews$.set(reviews);
