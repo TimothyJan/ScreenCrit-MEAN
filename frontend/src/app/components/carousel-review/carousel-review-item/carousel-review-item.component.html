@@ -1,7 +1,8 @@
 
 <div [ngSwitch]="movieOrTvSeries">
+
   <div *ngSwitchCase="'MOVIES'">
-    <div *ngIf="!loadingData; else loadingBlock">
+    <div *ngIf="!loadingData(); else loadingBlock">
       <div class="card">
         <div class="image">
           <a [routerLink]="" (click)="openEditDialog()">
@@ -14,13 +15,14 @@
               {{ movieDetails.title | title }}
             </a>
           </h2>
-          <app-star-rating [rating]="reviewRating" [canEditRating]="false"></app-star-rating>
+          <app-star-rating [rating]="reviewRating()" [canEditRating]="false"></app-star-rating>
         </div>
       </div>
     </div>
   </div>
+
   <div *ngSwitchCase="'TVSERIES'">
-    <div *ngIf="!loadingData; else loadingBlock">
+    <div *ngIf="!loadingData(); else loadingBlock">
       <div class="card">
         <div class="image">
           <a [routerLink]="" (click)="openEditDialog()">
@@ -33,7 +35,7 @@
               {{ tvSeriesDetails.name | title }}
             </a>
           </h2>
-          <app-star-rating [rating]="reviewRating" [canEditRating]="false"></app-star-rating>
+          <app-star-rating [rating]="reviewRating()" [canEditRating]="false"></app-star-rating>
         </div>
       </div>
     </div>
@@ -42,6 +44,5 @@
 </div>
 
 <ng-template #loadingBlock>
-  <app-loading-spinner [isLoading]="loadingData"></app-loading-spinner>
+  <app-loading-spinner [isLoading]="loadingData()"></app-loading-spinner>
 </ng-template>
-

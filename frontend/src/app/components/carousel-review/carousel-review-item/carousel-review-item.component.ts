@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Component, Input, OnInit, WritableSignal } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, WritableSignal, signal, effect, computed } from '@angular/core';
 
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
@@ -32,17 +32,18 @@ export class CarouselReviewItemComponent implements OnInit {
   @Input() movieOrTvSeries: string = ""; // MOVIES or TVSERIES****
   @Input() tmdbId: number = 0; // Movie or TV id
   @Input() review_id: string = "";
+
   movieDetails: MovieDetails;
   tvSeriesDetails: TVSeriesDetails;
-  currentMovieReview$ = {} as WritableSignal<Review>;
-  currentTVSeriesReview$ = {} as WritableSignal<Review>;
-  loadingData: boolean = true;
+
+  currentReview = signal<Review>({} as Review);
+  loadingData = signal<boolean>(true);
 
   imgWidth:number = 210;
   imgHeight:number = 350;
 
   // For star highlight component input to display highlighted stars in review mode
-  reviewRating: number;
+  reviewRating = computed(() => this.currentReview().rating);
 
   constructor(
     private _tmdbService: TmdbService,
@@ -51,10 +52,14 @@ export class CarouselReviewItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getAndSetCardDetails();
+    console.log('Component initialized with:', {
+      movieOrTvSeries: this.movieOrTvSeries,
+      tmdbId: this.tmdbId,
+      review_id: this.review_id
+    });
     this.getReview();
-    this.setStarRating();
-    this.loadingData = false;
+    this.getAndSetCardDetails();
+    // this.setStarRating();
   }
 
   /** Get and set Card Details */
@@ -77,6 +82,7 @@ export class CarouselReviewItemComponent implements OnInit {
     this._tmdbService.getMovieDetails(this.tmdbId)
     .subscribe(
       data => {
+        console.log('Fetched movie details:', data);
         this.movieDetails = {...data};
         this.setMovieCardPoster();
       },
@@ -91,6 +97,7 @@ export class CarouselReviewItemComponent implements OnInit {
     this._tmdbService.getTVSeriesDetails(this.tmdbId)
     .subscribe(
       data => {
+      console.log('Fetched TV series details:', data);
       this.tvSeriesDetails = {...data};
       this.setTvSeriesCardPoster();
       },
@@ -103,43 +110,33 @@ export class CarouselReviewItemComponent implements OnInit {
   /** Set Movie details */
   setMovieCardPoster(): void {
     // this.movieDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.movieDetails.poster_path;
-    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/w342/` + this.movieDetails.poster_path;
+    this.movieDetails.poster_path = `https://image.tmdb.org/t/p/w342` + this.movieDetails.poster_path;
   }
 
   /** Set TV Series Details */
   setTvSeriesCardPoster(): void {
     // this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/original/` + this.tvSeriesDetails.poster_path;
-    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/w342/` + this.tvSeriesDetails.poster_path;
+    this.tvSeriesDetails.poster_path = `https://image.tmdb.org/t/p/w342` + this.tvSeriesDetails.poster_path;
   }
 
-  getReview(): void {
+  /** Get Review from MongoDB service */
+  private getReview(): void {
     switch(this.movieOrTvSeries) {
       case "MOVIES":
-        this._reviewService.getMovieReview(this.review_id);
-        this.currentMovieReview$ = this._reviewService.review$;
+        this._reviewService.getMovieReview(this.review_id)
+        .subscribe(review => {
+          console.log('Fetched movie review:', review);
+          this.currentReview.set(review);
+          this.loadingData.set(false);
+        });
         break;
       case "TVSERIES":
-        this._reviewService.getTVReview(this.review_id);
-        this.currentTVSeriesReview$ = this._reviewService.review$;
-        break;
-      default:
-        console.log("Movie or Tvseries Error");
-        break;
-    }
-  }
-
-  /** Set star rating */
-  setStarRating(): void {
-    switch(this.movieOrTvSeries) {
-      case "MOVIES":
-        if (this.currentMovieReview$() != undefined) {
-          this.reviewRating = this.currentMovieReview$().rating;
-        }
-        break;
-      case "TVSERIES":
-        if (this.currentTVSeriesReview$() != undefined) {
-          this.reviewRating = this.currentTVSeriesReview$().rating;
-        }
+        this._reviewService.getTVReview(this.review_id)
+        .subscribe(review => {
+          console.log('Fetched TV series review:', review);
+          this.currentReview.set(review);
+          this.loadingData.set(false);
+        });
         break;
       default:
         console.log("Movie or Tvseries Error");

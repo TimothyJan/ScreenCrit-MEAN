@@ -35,7 +35,6 @@ export class CarouselReviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadingData = true;
     this.setTitle();
     this.fetchReviews();
   }
@@ -85,11 +84,13 @@ export class CarouselReviewComponent implements OnInit {
       case "MOVIES": {
         this.reviews$ = this._reviewService.movieReviews$;
         this._reviewService.getMovieReviews();
+        this.loadingData = false;
         break;
       }
       case "TVSERIES": {
         this.reviews$ = this._reviewService.tvReviews$;
         this._reviewService.getTVReviews();
+        this.loadingData = false;
         break;
       }
       default: {
