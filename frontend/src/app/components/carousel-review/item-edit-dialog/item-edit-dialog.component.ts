@@ -42,8 +42,6 @@ export class ItemEditDialogComponent implements OnInit {
   movieDetails: MovieDetails;
   tvSeriesDetails: TVSeriesDetails;
   genreList: string = "";
-  currentMovieReview$ = {} as WritableSignal<Review>;
-  currentTVSeriesReview$ = {} as WritableSignal<Review>;
 
   // For star highlight component input to display highlighted stars in review mode
   reviewRating: number = 0;
@@ -70,8 +68,6 @@ export class ItemEditDialogComponent implements OnInit {
     this.setDialogSize();
     this.getAndSetCardDetails();
     this.getReview();
-    this.setReviewStarRating();
-    this.setReviewReview();
     this.loadingData = false;
   }
 
@@ -142,18 +138,22 @@ export class ItemEditDialogComponent implements OnInit {
     }
   }
 
-  /** Get review data */
+  /** Get review data to set review and star rating */
   private getReview(): void {
     switch(this.data.movieOrTvSeries) {
       case "MOVIES":
-        this._reviewService.getMovieReview(this.data.review_id);
-        this.currentMovieReview$ = this._reviewService.review$;
-        console.log(this.currentMovieReview$());
+        this._reviewService.getMovieReview(this.data.review_id)
+        .subscribe(review => {
+          this.reviewForm.controls.review.setValue(review.review);
+          this.setRating(review.rating);
+        });
         break;
       case "TVSERIES":
-        this._reviewService.getTVReview(this.data.review_id);
-        this.currentTVSeriesReview$ = this._reviewService.review$;
-        console.log(this.currentTVSeriesReview$());
+        this._reviewService.getTVReview(this.data.review_id)
+        .subscribe(review => {
+          this.reviewForm.controls.review.setValue(review.review);
+          this.setRating(review.rating);
+        });
         break;
       default:
         console.log("Movie or Tvseries Error");
@@ -161,49 +161,10 @@ export class ItemEditDialogComponent implements OnInit {
     }
   }
 
-  /** Sets rating value from the star-rating component */
-  setReviewStarRating(): void {
-    switch(this.data.movieOrTvSeries) {
-      case "MOVIES":
-        if (this.currentMovieReview$() != undefined) {
-          this.reviewRating = this.currentMovieReview$().rating;
-        }
-        break;
-      case "TVSERIES":
-        if (this.currentTVSeriesReview$() != undefined) {
-          this.reviewRating = this.currentTVSeriesReview$().rating;
-        }
-        break;
-      default:
-        console.log("Movie or Tvseries Error");
-        break;
-    }
-  }
-
+  /** Set Star Rating */
   setRating(rating: number): void {
-    // for star highlight
     this.reviewRating = rating;
-    // for form
     this.reviewForm.controls['rating'].setValue(rating);
-  }
-
-  /** Get review data and sets it */
-  setReviewReview(): void {
-    switch(this.data.movieOrTvSeries) {
-      case "MOVIES":
-        if (this.currentMovieReview$() != undefined) {
-          this.reviewForm.controls['review'].setValue(this.currentMovieReview$().review);
-        }
-        break;
-      case "TVSERIES":
-        if(this.currentTVSeriesReview$() != undefined) {
-          this.reviewForm.controls['review'].setValue(this.currentTVSeriesReview$().review);
-        }
-        break;
-      default:
-        console.log("Movie or Tvseries Error");
-        break;
-    }
   }
 
   /** Submits review to database */

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ChangeDetectorRef, Component, Input, OnInit, WritableSignal, signal, effect, computed } from '@angular/core';
+import { Component, Input, OnInit, signal, computed } from '@angular/core';
 
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
@@ -36,14 +36,12 @@ export class CarouselReviewItemComponent implements OnInit {
   movieDetails: MovieDetails;
   tvSeriesDetails: TVSeriesDetails;
 
-  currentReview = signal<Review>({} as Review);
-  loadingData = signal<boolean>(true);
-
   imgWidth:number = 210;
   imgHeight:number = 350;
 
-  // For star highlight component input to display highlighted stars in review mode
+  currentReview = signal<Review>({} as Review);
   reviewRating = computed(() => this.currentReview().rating);
+  loadingData = signal<boolean>(true);
 
   constructor(
     private _tmdbService: TmdbService,
