@@ -1,4 +1,3 @@
-
 <div [ngSwitch]="movieOrTvSeries">
 
   <div *ngSwitchCase="'MOVIES'">
@@ -15,7 +14,7 @@
               {{ movieDetails.title | title }}
             </a>
           </h2>
-          <app-star-rating [rating]="reviewRating()" [canEditRating]="false"></app-star-rating>
+          <app-star-rating [rating]="currentReview().rating" [canEditRating]="false"></app-star-rating>
         </div>
       </div>
     </div>
@@ -35,7 +34,7 @@
               {{ tvSeriesDetails.name | title }}
             </a>
           </h2>
-          <app-star-rating [rating]="reviewRating()" [canEditRating]="false"></app-star-rating>
+          <app-star-rating [rating]="currentReview().rating" [canEditRating]="false"></app-star-rating>
         </div>
       </div>
     </div>

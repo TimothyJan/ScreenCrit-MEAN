@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Component, Input, OnInit, signal, computed } from '@angular/core';
+import { Component, Input, OnInit, signal, computed, OnChanges, SimpleChanges } from '@angular/core';
 
 import { MovieDetails } from '../../../models/movie-details';
 import { TVSeriesDetails } from '../../../models/tvseries-details';
@@ -40,7 +40,6 @@ export class CarouselReviewItemComponent implements OnInit {
   imgHeight:number = 350;
 
   currentReview = signal<Review>({} as Review);
-  reviewRating = computed(() => this.currentReview().rating);
   loadingData = signal<boolean>(true);
 
   constructor(
@@ -110,12 +109,13 @@ export class CarouselReviewItemComponent implements OnInit {
   }
 
   /** Get Review from MongoDB service */
-  private getReview(): void {
+  getReview(): void {
     switch(this.movieOrTvSeries) {
       case "MOVIES":
         this._reviewService.getMovieReview(this.review_id)
         .subscribe(review => {
           this.currentReview.set(review);
+          this._reviewService.refreshMovieReviews();
           this.loadingData.set(false);
         });
         break;
@@ -123,6 +123,7 @@ export class CarouselReviewItemComponent implements OnInit {
         this._reviewService.getTVReview(this.review_id)
         .subscribe(review => {
           this.currentReview.set(review);
+          this._reviewService.refreshTVReviews();
           this.loadingData.set(false);
         });
         break;

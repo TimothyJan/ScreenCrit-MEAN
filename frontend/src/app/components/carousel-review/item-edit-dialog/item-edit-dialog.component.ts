@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit, WritableSignal } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MovieDetails } from '../../../models/movie-details';
@@ -183,7 +183,6 @@ export class ItemEditDialogComponent implements OnInit {
               console.error(error);
             },
           });
-          this._reviewService.refreshMovieReviews();
           this._dialogRef.close()
           break;
         case "TVSERIES":
@@ -198,7 +197,6 @@ export class ItemEditDialogComponent implements OnInit {
               console.error(error);
             },
           });
-          this._reviewService.refreshTVReviews();
           this._dialogRef.close();
           break;
         default:

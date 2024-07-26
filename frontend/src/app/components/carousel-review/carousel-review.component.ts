@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, WritableSignal } from '@angular/core';
+import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
 import { ReviewService } from '../../services/review.service';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 import { CarouselReviewItemComponent } from './carousel-review-item/carousel-review-item.component';
@@ -21,14 +21,14 @@ export class CarouselReviewComponent implements OnInit {
 
   @Input() movieOrTvSeries: string = "";
 
-  reviews$ = {} as WritableSignal<Review[]>;
+  title:string = "";
 
-  title:string = ""
   currentIndex = 0;
   itemWidth = 300; // Adjust as needed
   offsetX = 10;
 
-  loadingData: boolean = true;
+  reviews = signal<Review[]>({} as Review[]);
+  loadingData = signal<boolean>(true);
 
   constructor(
     private _reviewService: ReviewService
@@ -79,18 +79,22 @@ export class CarouselReviewComponent implements OnInit {
     }
   }
 
-  private fetchReviews(): void {
+  fetchReviews(): void {
     switch(this.movieOrTvSeries) {
       case "MOVIES": {
-        this.reviews$ = this._reviewService.movieReviews$;
-        this._reviewService.getMovieReviews();
-        this.loadingData = false;
+        this._reviewService.getMovieReviews()
+        .subscribe(reviews => {
+          this.reviews.set(reviews);
+          this.loadingData.set(false);
+        });
         break;
       }
       case "TVSERIES": {
-        this.reviews$ = this._reviewService.tvReviews$;
-        this._reviewService.getTVReviews();
-        this.loadingData = false;
+        this._reviewService.getTVReviews()
+        .subscribe(reviews => {
+          this.reviews.set(reviews);
+          this.loadingData.set(false);
+        });
         break;
       }
       default: {
@@ -98,12 +102,11 @@ export class CarouselReviewComponent implements OnInit {
         break;
       }
     }
-    this.loadingData = false;
   }
 
   /** Moves carousel to next index */
   next(): void {
-    if (this.currentIndex < this.reviews$.length - 1) {
+    if (this.currentIndex < this.reviews().length - 1) {
       this.currentIndex++;
       this.offsetX = -this.currentIndex * this.itemWidth;
     }
@@ -119,6 +122,6 @@ export class CarouselReviewComponent implements OnInit {
 
   /** Checks if last item in list of items */
   isLastItem(): boolean {
-    return this.currentIndex >= this.reviews$.length - 10;
+    return this.currentIndex >= this.reviews().length -1;
   }
 }

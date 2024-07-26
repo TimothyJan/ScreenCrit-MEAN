@@ -1,19 +1,19 @@
 <div class="carousel-container">
 
-  <div *ngIf="!loadingData; else loadingBlock">
+  <div *ngIf="!loadingData(); else loadingBlock">
     <div class="carousel">
 
       <h3 class="carousel-title">{{ title }}</h3>
 
-      <div *ngIf="reviews$().length>0; else noReviews">
+      <div *ngIf="reviews().length>0; else noReviews">
         <div class="carousel-inner" [style.transform]="'translateX(' + offsetX + 'px)'">
-          <div class="carousel-item" *ngFor="let review of reviews$()">
+          <div class="carousel-item" *ngFor="let review of reviews()">
             <app-carousel-review-item [movieOrTvSeries]="review.category" [tmdbId]="review.tmdbId" [review_id]="review._id!"></app-carousel-review-item>
           </div>
         </div>
       </div>
 
-      <div *ngIf="reviews$.length>3" class="carousel-controls">
+      <div *ngIf="reviews().length>3" class="carousel-controls">
         <button (click)="prev()">&lt;</button>
         <button (click)="next()" *ngIf="!isLastItem()">&gt;</button>
       </div>
@@ -22,7 +22,7 @@
   </div>
 
   <ng-template #loadingBlock>
-    <app-loading-spinner [isLoading]="loadingData"></app-loading-spinner>
+    <app-loading-spinner [isLoading]="loadingData()"></app-loading-spinner>
   </ng-template>
 
   <ng-template #noReviews>

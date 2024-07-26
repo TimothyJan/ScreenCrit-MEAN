@@ -33,15 +33,15 @@ export class ReviewService {
   }
 
   /** Get Movie Reviews */
-  getMovieReviews() {
+  getMovieReviews(): Observable<Review[]> {
     this.refreshMovieReviews();
-    return this.movieReviews$();
+    return this.httpClient.get<Review[]>(`${this.url}/movie-reviews`);
   }
 
   /** Get TV Reviews */
-  getTVReviews() {
+  getTVReviews(): Observable<Review[]> {
     this.refreshTVReviews();
-    return this.tvReviews$();
+    return this.httpClient.get<Review[]>(`${this.url}/tv-reviews`);
   }
 
   /** Get Movie Review with input id */
